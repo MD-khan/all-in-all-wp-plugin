@@ -36,19 +36,41 @@ if( ! defined('ABSPATH') ) {
 
 class TaxiService 
 {
+	public $plugin_base_name;
 	public function __construct() 
 	{
+		$this->plugin_base_name = plugin_basename(__FILE__);
 		add_action('init', array( $this, 'customPostType') );
+
 	}
 
+	// Register plugin features
 	public function register()
 	{
 		add_action('admin_enqueue_scripts', array($this, 'enqueue') );
+		add_action('admin_menu', array($this, 'add_admin_pages'));
+		add_filter("plugin_action_links_$this->plugin_base_name", array($this, 'setting_link') );
 	}
 
+	public function setting_link( $links )
+	{
+		$setting_link = '<a href="admin.php?page=taxi_service_plugin"> Setting </a> ';	
+		array_push($links, $setting_link);
+		return $links;
+	}
+
+	public function add_admin_pages()
+	{
+		add_menu_page('Taxi_Service', 'Taxi Service', 'manage_options', 'taxi_service_plugin' , 
+			array($this, 'admin_index'), 'dashicons-megaphone', 10);
+	}
 	
+	public function admin_index()
+	{
+		require_once(plugin_dir_path(__FILE__).'templates/admin_page.php');
+	}
 	// Create Custom Post Type
-	protected function customPostType()
+	public function customPostType()
 	{
 		register_post_type('rideshare', [ 'public' => true, 'label' => 'Ride Share' ] );
 	}
@@ -66,9 +88,11 @@ if ( class_exists('TaxiService') ) {
 }
 
 // Activation
-register_activation_hook(__FILE__, array( $taxiService, 'activate') );
+require_once plugin_dir_path( __FILE__). 'inc/taxi-service-plugin-activate.php';
+register_activation_hook(__FILE__, array( 'PluginActivate', 'activate') );
 // Deactivation
-register_deactivation_hook(__FILE__, array( $taxiService, 'deactivate') );
+require_once plugin_dir_path( __FILE__). 'inc/taxi-service-plagin-deactive.php';
+register_deactivation_hook(__FILE__, array( 'PluginDectivate', 'deactivate') );
 
 
 
