@@ -2,9 +2,10 @@
 /**
  * @package Taxi Service
  */
-class PluginActivate {
+namespace Inc;
+class Activate {
 
-	public static function Activate ()
+	public static function activate ()
 	{
 		flush_rewrite_rules();
 	}
