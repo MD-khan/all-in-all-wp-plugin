@@ -3,18 +3,13 @@
  * @package Taxi Service
  */
 namespace Inc\Base;
-class SettingsLinks {
+use \Inc\Base\BaseController;
 
-	protected $plugin_base_name;
-
-	public function __construct()
-	{
-		$this->plugin_base_name = PLUGIN;
-	}
+class SettingsLinks extends BaseController {
 
 	public function register()
 	{
-		add_filter("plugin_action_links_$this->plugin_base_name", array($this, 'setting_link') );
+		add_filter("plugin_action_links_$this->plugin_name", array($this, 'setting_link') );
 	}
 
 	/**
@@ -28,5 +23,4 @@ class SettingsLinks {
 		array_push($links, $setting_link);
 		return $links;
 	}
-
-}
+}// class
