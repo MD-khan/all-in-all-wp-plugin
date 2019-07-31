@@ -4,21 +4,40 @@
  */
 namespace Inc\Pages;
 use \Inc\Base\BaseController;
+use \Inc\Api\SettingsApi;
 
 class Admin  extends BaseController {
 	
+	public $settings;
+	public $pages = array();
+	public function __construct()
+	{
+		$this->settings = new SettingsApi();
+		$this->pages = [   
+			[
+				'page_title' => 'Taxi Service',
+				'menu_title' => 'Taxi Service',
+				'capability' => 'manage_options',
+				'menu_slug' => 'taxi_service_plugin',
+				'callback' => function() { echo '<h1> Taxi service plugin </h1>'; },
+				'icon_url' => 'dashicons-megaphone',
+				'position' => '110'
+			],
+			[
+				'page_title' => 'Lyft Service',
+				'menu_title' => 'Lyft Service',
+				'capability' => 'manage_options',
+				'menu_slug' => 'lyft_service_plugin',
+				'callback' => function() { echo '<h1> Lyft service plugin </h1>'; },
+				'icon_url' => 'dashicons-external',
+				'position' => '111'
+			]
+		];
+	}
+
 	public function register()
 	{
-		add_action('admin_menu', array($this, 'add_admin_pages'));
-	}
-	public function add_admin_pages()
-	{
-		add_menu_page('Taxi_Service', 'Taxi Service', 'manage_options', 'taxi_service_plugin' , 
-			array($this, 'admin_index'), 'dashicons-megaphone', 10);
-	}
-	public function admin_index()
-	{
-		require_once $this->plugin_path.'templates/admin_page.php';
+		$this->settings->addPages( $this->pages )->register();
 	}
 	
 } // Admin class
