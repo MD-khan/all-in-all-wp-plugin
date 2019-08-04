@@ -24,5 +24,4 @@ class BaseController {
     	$files = glob( $this->plugin_path.$basename);
     	return plugin_basename($files[0]);
   	}
-
 }
