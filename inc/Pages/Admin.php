@@ -26,6 +26,10 @@ class Admin  extends BaseController {
 		$this->callbacks = new AdminCallbacks();
 		$this->setPages();
 		$this->setSubPages();
+		$this->setSettings();
+		$this->setSections();
+		$this->setFields();
+		
 		$this->settings->addPages( $this->pages )->withCustomTitle('Dashboard')->addSubPages( $this->subpages)->register();
 	}
 
@@ -72,6 +76,49 @@ class Admin  extends BaseController {
 				'callback' => function() { echo '<h1>Widgets Manager</h1>'; }
 			],
 		];
+	}
+
+	public function setSettings()
+	{
+		$args = [
+			[
+				'option_group' => 'taxi_service_options_group',
+				'option_name' => 'text_example',
+				'callback' => array( $this->callbacks, 'taxiServiceOptionGroup')
+			]
+		];
+		$this->settings->setSettings( $args);	
+	}
+
+	public function setSections()
+	{
+		$args = [
+			[
+				'id' => 'taxi_service_index',
+				'title' => 'Settings',
+				'callback' => array( $this->callbacks, 'taxiServiceAdminSection'),
+				'page' => 'taxi_service_plugin'
+			]
+		];
+		$this->settings->setSections( $args);	
+	}
+
+	public function setFields()
+	{
+		$args = [
+			[
+				'id' => 'text_example',
+				'title' => 'Text Example',
+				'callback' => array( $this->callbacks, 'taxiServiceTextExample'),
+				'page' => 'taxi_service_plugin',
+				'section' => 'taxi_service_index',
+				'args' => array(
+					'label_for' => 'text_example',
+					'class' => 'example-class'
+				)
+			]
+		];
+		$this->settings->setFields( $args);	
 	}
 	
 } // Admin class
