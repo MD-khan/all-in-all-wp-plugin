@@ -5,7 +5,8 @@
 /*
 Plugin Name: Taxi Service 
 Plugin URI: http://monirkhan.net./
-Description: Used by Thousands Car Service Companies around the world. It  is a complete taxi/car service plugin that can calculate fare, book passangers.
+Description: You can make any plugin with this plugin framework. To do so, you need to declare and define the 
+	plugin class and register them with the Init class
 Version: 1.0.0
 Author: MD Monirujaman Khan
 Author URI: http://monirkhan.net./
